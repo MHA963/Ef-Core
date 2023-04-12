@@ -15,7 +15,7 @@ namespace CanteenDb.Models
 
         [ForeignKey("Menu")]
         public int MenuId { get; set; }
-        public new Menu Menu { get; set; }
+        public Menu Menu { get; set; }
 
         public string StreetFood { get; set; }
         public string WarmDish { get; set; }

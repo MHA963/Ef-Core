@@ -24,6 +24,7 @@ namespace CanteenDb
         //Connection String to the database
         public string Connect = "Data Source=localhost;Initial Catalog=SqlConnection;Persist Security Info=True;User ID=sa;Password=0988220170Aa;TrustServerCertificate=True;";
 
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(Connect);

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CanteenDb.Migrations
 {
     [DbContext(typeof(myDbContext))]
-    [Migration("20230412154243_InitialCreate")]
+    [Migration("20230412162658_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -58,9 +58,17 @@ namespace CanteenDb.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MenuId"));
 
+                    b.Property<string>("CanceledMeals")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("CanteenName")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("JIT")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("MenuId");
 
