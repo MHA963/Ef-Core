@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CanteenDb.Migrations
 {
     [DbContext(typeof(myDbContext))]
-    [Migration("20230412120553_InitialCreate")]
+    [Migration("20230412154243_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -52,21 +52,21 @@ namespace CanteenDb.Migrations
 
             modelBuilder.Entity("CanteenDb.Models.Menu", b =>
                 {
+                    b.Property<int>("MenuId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MenuId"));
+
                     b.Property<string>("CanteenName")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.HasKey("MenuId");
 
                     b.HasIndex("CanteenName");
 
                     b.ToTable("Menu");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Menu");
-
-                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("CanteenDb.Models.Ratings", b =>
@@ -96,11 +96,11 @@ namespace CanteenDb.Migrations
 
             modelBuilder.Entity("CanteenDb.Models.Reservation", b =>
                 {
-                    b.Property<int>("mealId")
+                    b.Property<int>("ReservationId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("mealId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReservationId"));
 
                     b.Property<string>("CPR")
                         .IsRequired()
@@ -114,13 +114,39 @@ namespace CanteenDb.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("mealId");
+                    b.HasKey("ReservationId");
 
                     b.HasIndex("CPR");
 
                     b.HasIndex("CanteenName");
 
                     b.ToTable("Reservation");
+                });
+
+            modelBuilder.Entity("CanteenDb.Models.ReservationMenu", b =>
+                {
+                    b.Property<int>("ReservationMenuId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReservationMenuId"));
+
+                    b.Property<int>("MenuId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StreetFood")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WarmDish")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ReservationMenuId");
+
+                    b.HasIndex("MenuId");
+
+                    b.ToTable("ReservationMenu");
                 });
 
             modelBuilder.Entity("CanteenDb.Models.Reservationlist", b =>
@@ -136,21 +162,6 @@ namespace CanteenDb.Migrations
                     b.HasIndex("CanteenName");
 
                     b.ToTable("Reservationlist");
-                });
-
-            modelBuilder.Entity("CanteenDb.Models.ReservationMenu", b =>
-                {
-                    b.HasBaseType("CanteenDb.Models.Menu");
-
-                    b.Property<string>("StreetFood")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("WarmDish")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasDiscriminator().HasValue("ReservationMenu");
                 });
 
             modelBuilder.Entity("CanteenDb.Models.Menu", b =>
@@ -202,6 +213,17 @@ namespace CanteenDb.Migrations
                     b.Navigation("Customer");
                 });
 
+            modelBuilder.Entity("CanteenDb.Models.ReservationMenu", b =>
+                {
+                    b.HasOne("CanteenDb.Models.Menu", "Menu")
+                        .WithMany("ReservationMenus")
+                        .HasForeignKey("MenuId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Menu");
+                });
+
             modelBuilder.Entity("CanteenDb.Models.Reservationlist", b =>
                 {
                     b.HasOne("CanteenDb.Models.Canteen", "Canteen")
@@ -211,6 +233,11 @@ namespace CanteenDb.Migrations
                         .IsRequired();
 
                     b.Navigation("Canteen");
+                });
+
+            modelBuilder.Entity("CanteenDb.Models.Menu", b =>
+                {
+                    b.Navigation("ReservationMenus");
                 });
 #pragma warning restore 612, 618
         }

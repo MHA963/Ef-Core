@@ -38,13 +38,13 @@ namespace CanteenDb.Migrations
                 name: "Menu",
                 columns: table => new
                 {
-                    CanteenName = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StreetFood = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    WarmDish = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    MenuId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CanteenName = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
+                    table.PrimaryKey("PK_Menu", x => x.MenuId);
                     table.ForeignKey(
                         name: "FK_Menu_Canteen_CanteenName",
                         column: x => x.CanteenName,
@@ -100,7 +100,7 @@ namespace CanteenDb.Migrations
                 name: "Reservation",
                 columns: table => new
                 {
-                    mealId = table.Column<int>(type: "int", nullable: false)
+                    ReservationId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CPR = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CanteenName = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -108,7 +108,7 @@ namespace CanteenDb.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Reservation", x => x.mealId);
+                    table.PrimaryKey("PK_Reservation", x => x.ReservationId);
                     table.ForeignKey(
                         name: "FK_Reservation_Canteen_CanteenName",
                         column: x => x.CanteenName,
@@ -120,6 +120,27 @@ namespace CanteenDb.Migrations
                         column: x => x.CPR,
                         principalTable: "Customer",
                         principalColumn: "CPR",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ReservationMenu",
+                columns: table => new
+                {
+                    ReservationMenuId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MenuId = table.Column<int>(type: "int", nullable: false),
+                    StreetFood = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    WarmDish = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReservationMenu", x => x.ReservationMenuId);
+                    table.ForeignKey(
+                        name: "FK_ReservationMenu_Menu_MenuId",
+                        column: x => x.MenuId,
+                        principalTable: "Menu",
+                        principalColumn: "MenuId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -152,14 +173,16 @@ namespace CanteenDb.Migrations
                 name: "IX_Reservationlist_CanteenName",
                 table: "Reservationlist",
                 column: "CanteenName");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ReservationMenu_MenuId",
+                table: "ReservationMenu",
+                column: "MenuId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Menu");
-
             migrationBuilder.DropTable(
                 name: "Ratings");
 
@@ -170,7 +193,13 @@ namespace CanteenDb.Migrations
                 name: "Reservationlist");
 
             migrationBuilder.DropTable(
+                name: "ReservationMenu");
+
+            migrationBuilder.DropTable(
                 name: "Customer");
+
+            migrationBuilder.DropTable(
+                name: "Menu");
 
             migrationBuilder.DropTable(
                 name: "Canteen");

@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.SqlServer;
 using CanteenDb.Models;
 
+
 namespace CanteenDb
 {
     public class myDbContext : DbContext
@@ -18,21 +19,24 @@ namespace CanteenDb
         public DbSet<Reservation> Reservation { get; set; }
         public DbSet<Reservationlist> Reservationlist { get; set; }
         public DbSet<ReservationMenu> ReservationMenu { get; set; }
-        public DbSet<JITMenu> JITMenu { get; set; }
-        public DbSet<CanceledMeals> CanceledMeals { get; set; }
 
 
+        //Connection String to the database
+        public string Connect = "Data Source=localhost;Initial Catalog=SqlConnection;Persist Security Info=True;User ID=sa;Password=0988220170Aa;TrustServerCertificate=True;";
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=localhost;Initial Catalog=SW4DABSpring23;User ID=sa;Password=<YourStrong@Passw0rd>;Encrypt=False");
+            optionsBuilder.UseSqlServer(Connect);
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Menu>().HasNoKey();
             modelBuilder.Entity<Reservationlist>().HasNoKey();
-            modelBuilder.Entity<JITMenu>().HasNoKey();
-            modelBuilder.Entity<CanceledMeals>().HasNoKey();
+
+
+            // Configure other relationships if needed
+
+            // Call base class method to complete the model configuration
+            base.OnModelCreating(modelBuilder);
 
             // other configurations
         }
