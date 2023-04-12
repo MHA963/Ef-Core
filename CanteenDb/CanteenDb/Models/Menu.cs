@@ -14,4 +14,13 @@ namespace CanteenDb.Models
         public string CanteenName { get; set; }
         public Canteen Canteen { get; set; }
     }
+
+    public class JIT : Menu
+    {
+    }
+
+    public class CanceledMenu : Menu
+    {
+    }
+
 }

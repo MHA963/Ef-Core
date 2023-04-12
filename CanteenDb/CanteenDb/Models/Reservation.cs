@@ -11,7 +11,7 @@ namespace CanteenDb.Models
     public class Reservation
     {
         [Key]
-        public int ReservationID { get; set; }
+        public int mealId { get; set; }
 
         [ForeignKey("Customer")]
         public string CPR { get; set; }
@@ -20,17 +20,10 @@ namespace CanteenDb.Models
         [ForeignKey("Canteen")]
         public string CanteenName { get; set; }
         public Canteen Canteen { get; set; }
-
-        [ForeignKey("Menu")]
-        public int mealId { get; set; }
-        public Menu Menu { get; set; }
-
-        public DateTime ReservationTime { get; set; }
-        public DateTime? CanceledTime { get; set; }
-        public bool IsCanceled { get; set; }
         
-        [NotMapped]
-        public DateTime ReservationDate => ReservationTime.Date;
+        public bool IsCanceled { get; set; }
+        public int Amount { get; set; }
+        
 
     }
 }
