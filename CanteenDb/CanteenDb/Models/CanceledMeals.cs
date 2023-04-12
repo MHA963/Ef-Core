@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CanteenDb.Models
 {
-    public class CanceledMeals :Menu
+    public class CanceledMeals
     {
         public string CanceledMeal { get; set; }
 

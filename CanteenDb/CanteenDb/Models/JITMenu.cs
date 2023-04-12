@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CanteenDb.Models
 {
-    public class JITMenu : Menu
+    public class JITMenu
     {
         public string JitMeals { get; set; }
 

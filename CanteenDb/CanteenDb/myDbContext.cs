@@ -18,8 +18,11 @@ namespace CanteenDb
         public DbSet<Reservation> Reservation { get; set; }
         public DbSet<Reservationlist> Reservationlist { get; set; }
         public DbSet<ReservationMenu> ReservationMenu { get; set; }
+        public DbSet<JITMenu> JITMenu { get; set; }
+        public DbSet<CanceledMeals> CanceledMeals { get; set; }
 
-        
+
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("Data Source=localhost;Initial Catalog=SW4DABSpring23;User ID=sa;Password=<YourStrong@Passw0rd>;Encrypt=False");
@@ -28,6 +31,9 @@ namespace CanteenDb
         {
             modelBuilder.Entity<Menu>().HasNoKey();
             modelBuilder.Entity<Reservationlist>().HasNoKey();
+            modelBuilder.Entity<JITMenu>().HasNoKey();
+            modelBuilder.Entity<CanceledMeals>().HasNoKey();
+
             // other configurations
         }
 
