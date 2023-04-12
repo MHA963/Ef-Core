@@ -24,6 +24,12 @@ namespace CanteenDb
         {
             optionsBuilder.UseSqlServer("Data Source=localhost;Initial Catalog=SqlConnection;Persist Security Info=True;User ID=sa;Password=220170Aa");
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Menu>().HasNoKey();
+            modelBuilder.Entity<Reservationlist>().HasNoKey();
+            // other configurations
+        }
 
     }
 }

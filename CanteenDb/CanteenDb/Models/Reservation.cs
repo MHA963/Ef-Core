@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace CanteenDb.Models
 {
@@ -20,7 +21,7 @@ namespace CanteenDb.Models
         [ForeignKey("Canteen")]
         public string CanteenName { get; set; }
         public Canteen Canteen { get; set; }
-        
+
         //public bool IsCanceled { get; set; }
         public string MealName { get; set; }
 
