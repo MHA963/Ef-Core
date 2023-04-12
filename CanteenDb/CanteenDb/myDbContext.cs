@@ -22,7 +22,7 @@ namespace CanteenDb
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=localhost;Initial Catalog=SqlConnection;Persist Security Info=True;User ID=sa;Password=220170Aa");
+            optionsBuilder.UseSqlServer("Data Source=localhost;Initial Catalog=SW4DABSpring23;User ID=sa;Password=<YourStrong@Passw0rd>;Encrypt=False");
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
