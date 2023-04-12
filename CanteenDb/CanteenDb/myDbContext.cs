@@ -16,6 +16,9 @@ namespace CanteenDb
         public DbSet<Ratings> Ratings { get; set; }
         public DbSet<Menu> Menu { get; set; }
         public DbSet<Reservation> Reservation { get; set; }
+        public DbSet<Reservationlist> Reservationlist { get; set; }
+        public DbSet<ReservationMenu> ReservationMenu { get; set; }
+
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
