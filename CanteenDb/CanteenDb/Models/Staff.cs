@@ -1,23 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CanteenDb.Models
 {
-    public class Ratings
+    public class Staff
     {
         [Key]
-        public int Rating { get; set; }
+        public int StaffID { get; set; }
+        public string Name { get; set; }
+        public string Title { get; set; }
+        public int Salary { get; set; }
         [ForeignKey("Canteen")]
         public string CanteenName { get; set; }
         public Canteen Canteen { get; set; }
-
-        [ForeignKey("Customer")]
-        public string AUID { get; set; }
-        public Customer Customer { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using CanteenDb;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CanteenDb.Migrations
 {
     [DbContext(typeof(myDbContext))]
-    partial class myDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230413105344_Staff-Salary-Addition-Corrected")]
+    partial class StaffSalaryAdditionCorrected
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -165,36 +168,6 @@ namespace CanteenDb.Migrations
                     b.ToTable("Reservationlist");
                 });
 
-            modelBuilder.Entity("CanteenDb.Models.Staff", b =>
-                {
-                    b.Property<int>("StaffID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StaffID"));
-
-                    b.Property<string>("CanteenName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Salary")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("StaffID");
-
-                    b.HasIndex("CanteenName");
-
-                    b.ToTable("Staff");
-                });
-
             modelBuilder.Entity("CanteenDb.Models.Menu", b =>
                 {
                     b.HasOne("CanteenDb.Models.Canteen", "Canteen")
@@ -256,17 +229,6 @@ namespace CanteenDb.Migrations
                 });
 
             modelBuilder.Entity("CanteenDb.Models.Reservationlist", b =>
-                {
-                    b.HasOne("CanteenDb.Models.Canteen", "Canteen")
-                        .WithMany()
-                        .HasForeignKey("CanteenName")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Canteen");
-                });
-
-            modelBuilder.Entity("CanteenDb.Models.Staff", b =>
                 {
                     b.HasOne("CanteenDb.Models.Canteen", "Canteen")
                         .WithMany()
