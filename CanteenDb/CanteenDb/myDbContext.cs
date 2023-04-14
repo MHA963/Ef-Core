@@ -19,7 +19,7 @@ namespace CanteenDb
         public DbSet<Reservationlist> Reservationlist { get; set; }
         public DbSet<ReservationMenu> ReservationMenu { get; set; }
         public DbSet<CanceledMeals> CanceledMeals { get; set; }
-        public DbSet<JITMeals> JITMeals { get; set; }
+       
         public DbSet<StreetFood> StreetFood { get; set; }
         public DbSet<Warmdish> Warmdish { get; set; }
 
@@ -35,8 +35,6 @@ namespace CanteenDb
         {
             modelBuilder.Entity<Reservationlist>().HasNoKey();
             modelBuilder.Entity<CanceledMeals>().HasNoKey();
-            modelBuilder.Entity<JITMeals>().HasNoKey();
-
 
             // Configure other relationships if needed
 

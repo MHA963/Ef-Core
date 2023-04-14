@@ -20,16 +20,7 @@ namespace CanteenDb.Models
         public string? CanceledMealsName { get; set; }
     }
 
-    public class JITMeals
-    {
-
-        [ForeignKey("Canteen")]
-        public string? CanteenName { get; set; }
-        public Canteen? Canteen { get; set; }
-        
-        
-        public string? JITName { get; set; }
-    }
+    
     public class ReservationMenu
     {
         [Key]
