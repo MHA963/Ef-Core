@@ -20,7 +20,7 @@ namespace CanteenDb.Models
         public Canteen? Canteen { get; set; }
 
         [ForeignKey("Customer")]
-        public string? CPR { get; set; }
+        public string? AUID { get; set; }
         public Customer? Customer { get; set; }
     }
 }
