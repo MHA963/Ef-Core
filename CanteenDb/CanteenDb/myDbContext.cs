@@ -15,11 +15,13 @@ namespace CanteenDb
         public DbSet<Canteen> Canteen { get; set; }
         public DbSet<Customer> Customer { get; set; }
         public DbSet<Ratings> Ratings { get; set; }
-        public DbSet<Menu> Menu { get; set; }
         public DbSet<Reservation> Reservation { get; set; }
         public DbSet<Reservationlist> Reservationlist { get; set; }
         public DbSet<ReservationMenu> ReservationMenu { get; set; }
-
+        public DbSet<CanceledMeals> CanceledMeals { get; set; }
+        public DbSet<JITMeals> JITMeals { get; set; }
+        public DbSet<StreetFood> StreetFood { get; set; }
+        public DbSet<Warmdish> Warmdish { get; set; }
 
         //Connection String to the database
         public string Connect = "Data Source=localhost;Initial Catalog=SqlConnection;Persist Security Info=True;User ID=sa;Password=0988220170Aa;TrustServerCertificate=True;";
@@ -32,6 +34,8 @@ namespace CanteenDb
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Reservationlist>().HasNoKey();
+            modelBuilder.Entity<CanceledMeals>().HasNoKey();
+            modelBuilder.Entity<JITMeals>().HasNoKey();
 
 
             // Configure other relationships if needed

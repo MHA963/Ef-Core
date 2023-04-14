@@ -12,10 +12,10 @@ namespace CanteenDb.Models
     {
 
         [ForeignKey("Canteen")]
-        public string CanteenName { get; set; }
-        public Canteen Canteen { get; set; }
+        public string? CanteenName { get; set; }
+        public Canteen? Canteen { get; set; }
            
-        public string MealName { get; set; }
+        public string? MealName { get; set; }
 
 
     }

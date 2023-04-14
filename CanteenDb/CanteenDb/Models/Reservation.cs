@@ -16,15 +16,15 @@ namespace CanteenDb.Models
         public int ReservationId { get; set; }
 
         [ForeignKey("Customer")]
-        public string CPR { get; set; }
-        public Customer Customer { get; set; }
+        public string? CPR { get; set; }
+        public Customer? Customer { get; set; }
 
         [ForeignKey("Canteen")]
-        public string CanteenName { get; set; }
-        public Canteen Canteen { get; set; }
+        public string? CanteenName { get; set; }
+        public Canteen? Canteen { get; set; }
 
         //public bool IsCanceled { get; set; }
-        public string MealName { get; set; }
+        public string? MealName { get; set; }
 
 
     }
