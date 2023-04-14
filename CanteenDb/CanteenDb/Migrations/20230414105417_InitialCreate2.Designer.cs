@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CanteenDb.Migrations
 {
     [DbContext(typeof(myDbContext))]
-    [Migration("20230412162658_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20230414105417_InitialCreate2")]
+    partial class InitialCreate2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,6 +23,19 @@ namespace CanteenDb.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("CanteenDb.Models.CanceledMeals", b =>
+                {
+                    b.Property<string>("CanceledMealsName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CanteenName")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasIndex("CanteenName");
+
+                    b.ToTable("CanceledMeals");
+                });
 
             modelBuilder.Entity("CanteenDb.Models.Canteen", b =>
                 {
@@ -50,50 +63,37 @@ namespace CanteenDb.Migrations
                     b.ToTable("Customer");
                 });
 
-            modelBuilder.Entity("CanteenDb.Models.Menu", b =>
+            modelBuilder.Entity("CanteenDb.Models.JITMeals", b =>
                 {
-                    b.Property<int>("MenuId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MenuId"));
-
-                    b.Property<string>("CanceledMeals")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("CanteenName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("JIT")
-                        .IsRequired()
+                    b.Property<string>("JITName")
                         .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("MenuId");
 
                     b.HasIndex("CanteenName");
 
-                    b.ToTable("Menu");
+                    b.ToTable("JITMeals");
                 });
 
             modelBuilder.Entity("CanteenDb.Models.Ratings", b =>
                 {
-                    b.Property<int>("Rating")
+                    b.Property<int>("RatingId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Rating"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RatingId"));
 
                     b.Property<string>("CPR")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CanteenName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("Rating");
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.HasKey("RatingId");
 
                     b.HasIndex("CPR");
 
@@ -111,15 +111,12 @@ namespace CanteenDb.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReservationId"));
 
                     b.Property<string>("CPR")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CanteenName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("MealName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ReservationId");
@@ -133,38 +130,36 @@ namespace CanteenDb.Migrations
 
             modelBuilder.Entity("CanteenDb.Models.ReservationMenu", b =>
                 {
-                    b.Property<int>("ReservationMenuId")
+                    b.Property<int>("MenuId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReservationMenuId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MenuId"));
 
-                    b.Property<int>("MenuId")
-                        .HasColumnType("int");
+                    b.Property<string>("CanteenName")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("StreetFood")
+                    b.Property<string>("Discriminator")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("WarmDish")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.HasKey("MenuId");
 
-                    b.HasKey("ReservationMenuId");
-
-                    b.HasIndex("MenuId");
+                    b.HasIndex("CanteenName");
 
                     b.ToTable("ReservationMenu");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("ReservationMenu");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("CanteenDb.Models.Reservationlist", b =>
                 {
                     b.Property<string>("CanteenName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("MealName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasIndex("CanteenName");
@@ -172,13 +167,46 @@ namespace CanteenDb.Migrations
                     b.ToTable("Reservationlist");
                 });
 
-            modelBuilder.Entity("CanteenDb.Models.Menu", b =>
+            modelBuilder.Entity("CanteenDb.Models.StreetFood", b =>
+                {
+                    b.HasBaseType("CanteenDb.Models.ReservationMenu");
+
+                    b.Property<string>("name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasDiscriminator().HasValue("StreetFood");
+                });
+
+            modelBuilder.Entity("CanteenDb.Models.Warmdish", b =>
+                {
+                    b.HasBaseType("CanteenDb.Models.ReservationMenu");
+
+                    b.Property<string>("name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("ReservationMenu", t =>
+                        {
+                            t.Property("name")
+                                .HasColumnName("Warmdish_name");
+                        });
+
+                    b.HasDiscriminator().HasValue("Warmdish");
+                });
+
+            modelBuilder.Entity("CanteenDb.Models.CanceledMeals", b =>
                 {
                     b.HasOne("CanteenDb.Models.Canteen", "Canteen")
                         .WithMany()
-                        .HasForeignKey("CanteenName")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CanteenName");
+
+                    b.Navigation("Canteen");
+                });
+
+            modelBuilder.Entity("CanteenDb.Models.JITMeals", b =>
+                {
+                    b.HasOne("CanteenDb.Models.Canteen", "Canteen")
+                        .WithMany()
+                        .HasForeignKey("CanteenName");
 
                     b.Navigation("Canteen");
                 });
@@ -187,15 +215,11 @@ namespace CanteenDb.Migrations
                 {
                     b.HasOne("CanteenDb.Models.Customer", "Customer")
                         .WithMany()
-                        .HasForeignKey("CPR")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CPR");
 
                     b.HasOne("CanteenDb.Models.Canteen", "Canteen")
                         .WithMany()
-                        .HasForeignKey("CanteenName")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CanteenName");
 
                     b.Navigation("Canteen");
 
@@ -206,15 +230,11 @@ namespace CanteenDb.Migrations
                 {
                     b.HasOne("CanteenDb.Models.Customer", "Customer")
                         .WithMany()
-                        .HasForeignKey("CPR")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CPR");
 
                     b.HasOne("CanteenDb.Models.Canteen", "Canteen")
                         .WithMany()
-                        .HasForeignKey("CanteenName")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CanteenName");
 
                     b.Navigation("Canteen");
 
@@ -223,29 +243,20 @@ namespace CanteenDb.Migrations
 
             modelBuilder.Entity("CanteenDb.Models.ReservationMenu", b =>
                 {
-                    b.HasOne("CanteenDb.Models.Menu", "Menu")
-                        .WithMany("ReservationMenus")
-                        .HasForeignKey("MenuId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("CanteenDb.Models.Canteen", "Canteen")
+                        .WithMany()
+                        .HasForeignKey("CanteenName");
 
-                    b.Navigation("Menu");
+                    b.Navigation("Canteen");
                 });
 
             modelBuilder.Entity("CanteenDb.Models.Reservationlist", b =>
                 {
                     b.HasOne("CanteenDb.Models.Canteen", "Canteen")
                         .WithMany()
-                        .HasForeignKey("CanteenName")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CanteenName");
 
                     b.Navigation("Canteen");
-                });
-
-            modelBuilder.Entity("CanteenDb.Models.Menu", b =>
-                {
-                    b.Navigation("ReservationMenus");
                 });
 #pragma warning restore 612, 618
         }

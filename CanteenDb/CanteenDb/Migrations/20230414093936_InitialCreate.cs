@@ -35,32 +35,43 @@ namespace CanteenDb.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Menu",
+                name: "CanceledMeals",
                 columns: table => new
                 {
-                    MenuId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CanteenName = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CanceledMeals = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    JIT = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    CanteenName = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CanceledMealsName = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Menu", x => x.MenuId);
                     table.ForeignKey(
-                        name: "FK_Menu_Canteen_CanteenName",
+                        name: "FK_CanceledMeals_Canteen_CanteenName",
                         column: x => x.CanteenName,
                         principalTable: "Canteen",
-                        principalColumn: "CanteenName",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "CanteenName");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "JITMeals",
+                columns: table => new
+                {
+                    CanteenName = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    JITName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.ForeignKey(
+                        name: "FK_JITMeals_Canteen_CanteenName",
+                        column: x => x.CanteenName,
+                        principalTable: "Canteen",
+                        principalColumn: "CanteenName");
                 });
 
             migrationBuilder.CreateTable(
                 name: "Reservationlist",
                 columns: table => new
                 {
-                    CanteenName = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    MealName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    CanteenName = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    MealName = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -68,34 +79,53 @@ namespace CanteenDb.Migrations
                         name: "FK_Reservationlist_Canteen_CanteenName",
                         column: x => x.CanteenName,
                         principalTable: "Canteen",
-                        principalColumn: "CanteenName",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "CanteenName");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ReservationMenu",
+                columns: table => new
+                {
+                    MenuId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CanteenName = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Warmdish_name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReservationMenu", x => x.MenuId);
+                    table.ForeignKey(
+                        name: "FK_ReservationMenu_Canteen_CanteenName",
+                        column: x => x.CanteenName,
+                        principalTable: "Canteen",
+                        principalColumn: "CanteenName");
                 });
 
             migrationBuilder.CreateTable(
                 name: "Ratings",
                 columns: table => new
                 {
-                    Rating = table.Column<int>(type: "int", nullable: false)
+                    RatingId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CanteenName = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CPR = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    Rating = table.Column<int>(type: "int", nullable: false),
+                    CanteenName = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CPR = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Ratings", x => x.Rating);
+                    table.PrimaryKey("PK_Ratings", x => x.RatingId);
                     table.ForeignKey(
                         name: "FK_Ratings_Canteen_CanteenName",
                         column: x => x.CanteenName,
                         principalTable: "Canteen",
-                        principalColumn: "CanteenName",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "CanteenName");
                     table.ForeignKey(
                         name: "FK_Ratings_Customer_CPR",
                         column: x => x.CPR,
                         principalTable: "Customer",
-                        principalColumn: "CPR",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "CPR");
                 });
 
             migrationBuilder.CreateTable(
@@ -104,9 +134,9 @@ namespace CanteenDb.Migrations
                 {
                     ReservationId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CPR = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CanteenName = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    MealName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    CPR = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CanteenName = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    MealName = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -115,40 +145,22 @@ namespace CanteenDb.Migrations
                         name: "FK_Reservation_Canteen_CanteenName",
                         column: x => x.CanteenName,
                         principalTable: "Canteen",
-                        principalColumn: "CanteenName",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "CanteenName");
                     table.ForeignKey(
                         name: "FK_Reservation_Customer_CPR",
                         column: x => x.CPR,
                         principalTable: "Customer",
-                        principalColumn: "CPR",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ReservationMenu",
-                columns: table => new
-                {
-                    ReservationMenuId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    MenuId = table.Column<int>(type: "int", nullable: false),
-                    StreetFood = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    WarmDish = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ReservationMenu", x => x.ReservationMenuId);
-                    table.ForeignKey(
-                        name: "FK_ReservationMenu_Menu_MenuId",
-                        column: x => x.MenuId,
-                        principalTable: "Menu",
-                        principalColumn: "MenuId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "CPR");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Menu_CanteenName",
-                table: "Menu",
+                name: "IX_CanceledMeals_CanteenName",
+                table: "CanceledMeals",
+                column: "CanteenName");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_JITMeals_CanteenName",
+                table: "JITMeals",
                 column: "CanteenName");
 
             migrationBuilder.CreateIndex(
@@ -177,14 +189,20 @@ namespace CanteenDb.Migrations
                 column: "CanteenName");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ReservationMenu_MenuId",
+                name: "IX_ReservationMenu_CanteenName",
                 table: "ReservationMenu",
-                column: "MenuId");
+                column: "CanteenName");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "CanceledMeals");
+
+            migrationBuilder.DropTable(
+                name: "JITMeals");
+
             migrationBuilder.DropTable(
                 name: "Ratings");
 
@@ -199,9 +217,6 @@ namespace CanteenDb.Migrations
 
             migrationBuilder.DropTable(
                 name: "Customer");
-
-            migrationBuilder.DropTable(
-                name: "Menu");
 
             migrationBuilder.DropTable(
                 name: "Canteen");
