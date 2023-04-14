@@ -16,7 +16,7 @@ namespace CanteenDb.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.5")
+                .HasAnnotation("ProductVersion", "7.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -39,10 +39,10 @@ namespace CanteenDb.Migrations
 
             modelBuilder.Entity("CanteenDb.Models.Customer", b =>
                 {
-                    b.Property<string>("AUID")
+                    b.Property<string>("CPR")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("AUID");
+                    b.HasKey("CPR");
 
                     b.ToTable("Customer");
                 });
@@ -63,6 +63,10 @@ namespace CanteenDb.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("JIT")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("MenuId");
 
                     b.HasIndex("CanteenName");
@@ -78,7 +82,7 @@ namespace CanteenDb.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Rating"));
 
-                    b.Property<string>("AUID")
+                    b.Property<string>("CPR")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
@@ -88,7 +92,7 @@ namespace CanteenDb.Migrations
 
                     b.HasKey("Rating");
 
-                    b.HasIndex("AUID");
+                    b.HasIndex("CPR");
 
                     b.HasIndex("CanteenName");
 
@@ -103,7 +107,7 @@ namespace CanteenDb.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReservationId"));
 
-                    b.Property<string>("AUID")
+                    b.Property<string>("CPR")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
@@ -117,7 +121,7 @@ namespace CanteenDb.Migrations
 
                     b.HasKey("ReservationId");
 
-                    b.HasIndex("AUID");
+                    b.HasIndex("CPR");
 
                     b.HasIndex("CanteenName");
 
@@ -165,36 +169,6 @@ namespace CanteenDb.Migrations
                     b.ToTable("Reservationlist");
                 });
 
-            modelBuilder.Entity("CanteenDb.Models.Staff", b =>
-                {
-                    b.Property<int>("StaffID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StaffID"));
-
-                    b.Property<string>("CanteenName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Salary")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("StaffID");
-
-                    b.HasIndex("CanteenName");
-
-                    b.ToTable("Staff");
-                });
-
             modelBuilder.Entity("CanteenDb.Models.Menu", b =>
                 {
                     b.HasOne("CanteenDb.Models.Canteen", "Canteen")
@@ -210,7 +184,7 @@ namespace CanteenDb.Migrations
                 {
                     b.HasOne("CanteenDb.Models.Customer", "Customer")
                         .WithMany()
-                        .HasForeignKey("AUID")
+                        .HasForeignKey("CPR")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -229,7 +203,7 @@ namespace CanteenDb.Migrations
                 {
                     b.HasOne("CanteenDb.Models.Customer", "Customer")
                         .WithMany()
-                        .HasForeignKey("AUID")
+                        .HasForeignKey("CPR")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -256,17 +230,6 @@ namespace CanteenDb.Migrations
                 });
 
             modelBuilder.Entity("CanteenDb.Models.Reservationlist", b =>
-                {
-                    b.HasOne("CanteenDb.Models.Canteen", "Canteen")
-                        .WithMany()
-                        .HasForeignKey("CanteenName")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Canteen");
-                });
-
-            modelBuilder.Entity("CanteenDb.Models.Staff", b =>
                 {
                     b.HasOne("CanteenDb.Models.Canteen", "Canteen")
                         .WithMany()

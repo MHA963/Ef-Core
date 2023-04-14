@@ -10,6 +10,7 @@ namespace CanteenDb.Models
     public class Customer
     {
         [Key]
-        public string AUID { get; set; }
+        public string CPR { get; set; }
+     
     }
 }

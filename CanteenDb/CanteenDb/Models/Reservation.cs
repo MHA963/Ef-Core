@@ -16,7 +16,7 @@ namespace CanteenDb.Models
         public int ReservationId { get; set; }
 
         [ForeignKey("Customer")]
-        public string AUID { get; set; }
+        public string CPR { get; set; }
         public Customer Customer { get; set; }
 
         [ForeignKey("Canteen")]

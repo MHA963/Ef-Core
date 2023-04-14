@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CanteenDb.Models
 {
-    public class Menu
+    public class Menu 
     {
         [Key]
         public int MenuId { get; set; }
@@ -18,7 +18,9 @@ namespace CanteenDb.Models
         public Canteen Canteen { get; set; }
 
         public string CanceledMeals { get; set; }
+        public string JIT { get; set; }
         //navigating to ReservationMenu as list
         public List<ReservationMenu> ReservationMenus { get; set; }
+    
     }
 }
