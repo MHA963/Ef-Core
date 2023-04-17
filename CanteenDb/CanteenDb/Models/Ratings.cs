@@ -14,13 +14,13 @@ namespace CanteenDb.Models
         public int RatingId { get; set; } // Rename the property to indicate it's a primary key
 
         public int Rating { get; set; }
-     
+
         [ForeignKey("Canteen")]
         public string? CanteenName { get; set; }
         public Canteen? Canteen { get; set; }
 
         [ForeignKey("Customer")]
-        public string? CPR { get; set; }
+        public string? AUID { get; set; }
         public Customer? Customer { get; set; }
     }
 }

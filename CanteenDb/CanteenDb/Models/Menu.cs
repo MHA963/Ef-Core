@@ -9,27 +9,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CanteenDb.Models
 {
 
-    public class CanceledMeals 
+    public class CanceledMeals
     {
 
         [ForeignKey("Canteen")]
         public string? CanteenName { get; set; }
         public Canteen? Canteen { get; set; }
 
-       
         public string? CanceledMealsName { get; set; }
     }
 
-    public class JITMeals
-    {
-
-        [ForeignKey("Canteen")]
-        public string? CanteenName { get; set; }
-        public Canteen? Canteen { get; set; }
-        
-        
-        public string? JITName { get; set; }
-    }
     public class ReservationMenu
     {
         [Key]

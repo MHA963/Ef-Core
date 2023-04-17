@@ -11,15 +11,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CanteenDb.Migrations
 {
     [DbContext(typeof(myDbContext))]
-    [Migration("20230414134226_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20230414140919_NewMigration2")]
+    partial class NewMigration2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.4")
+                .HasAnnotation("ProductVersion", "7.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -55,10 +55,10 @@ namespace CanteenDb.Migrations
 
             modelBuilder.Entity("CanteenDb.Models.Customer", b =>
                 {
-                    b.Property<string>("CPR")
+                    b.Property<string>("AUID")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("CPR");
+                    b.HasKey("AUID");
 
                     b.ToTable("Customer");
                 });
@@ -84,7 +84,7 @@ namespace CanteenDb.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RatingId"));
 
-                    b.Property<string>("CPR")
+                    b.Property<string>("AUID")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CanteenName")
@@ -95,7 +95,7 @@ namespace CanteenDb.Migrations
 
                     b.HasKey("RatingId");
 
-                    b.HasIndex("CPR");
+                    b.HasIndex("AUID");
 
                     b.HasIndex("CanteenName");
 
@@ -110,7 +110,7 @@ namespace CanteenDb.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReservationId"));
 
-                    b.Property<string>("CPR")
+                    b.Property<string>("AUID")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CanteenName")
@@ -121,7 +121,7 @@ namespace CanteenDb.Migrations
 
                     b.HasKey("ReservationId");
 
-                    b.HasIndex("CPR");
+                    b.HasIndex("AUID");
 
                     b.HasIndex("CanteenName");
 
@@ -215,7 +215,7 @@ namespace CanteenDb.Migrations
                 {
                     b.HasOne("CanteenDb.Models.Customer", "Customer")
                         .WithMany()
-                        .HasForeignKey("CPR");
+                        .HasForeignKey("AUID");
 
                     b.HasOne("CanteenDb.Models.Canteen", "Canteen")
                         .WithMany()
@@ -230,7 +230,7 @@ namespace CanteenDb.Migrations
                 {
                     b.HasOne("CanteenDb.Models.Customer", "Customer")
                         .WithMany()
-                        .HasForeignKey("CPR");
+                        .HasForeignKey("AUID");
 
                     b.HasOne("CanteenDb.Models.Canteen", "Canteen")
                         .WithMany()
