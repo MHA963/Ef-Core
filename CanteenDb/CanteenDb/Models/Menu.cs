@@ -13,10 +13,10 @@ namespace CanteenDb.Models
     {
 
         [ForeignKey("Canteen")]
+        public string? CanceledMealsName { get; set; }
         public string? CanteenName { get; set; }
         public Canteen? Canteen { get; set; }
 
-        public string? CanceledMealsName { get; set; }
     }
 
     public class ReservationMenu

@@ -23,7 +23,6 @@ namespace CanteenDb.Models
         public string? CanteenName { get; set; }
         public Canteen? Canteen { get; set; }
 
-        //public bool IsCanceled { get; set; }
         public string? MealName { get; set; }
 
 
